@@ -9,7 +9,7 @@ import (
 
 var _ = Describe("exec", func() {
 	It("returns true for existing executables", func() {
-		found := IsExecutable("ls")
+		found := IsExecutable("sh")
 		Expect(found).To(Equal(true))
 	})
 
