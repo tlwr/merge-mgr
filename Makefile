@@ -1,7 +1,7 @@
-test: *.go **/*.go
+test:
 	go test -v ./...
 
-build: *.go
+build:
 	go build
 
 install: build
