@@ -142,6 +142,7 @@ func GHGetPulls(user string) ([]GHOpenPR, error) {
 }
 
 func GHMergePR(url string) error {
+	// use a temporary directory so local branch detection doesn't recurse anywhere sensitive
 	dir, err := ioutil.TempDir("", "merge-mgr")
 	if err != nil {
 		return err
