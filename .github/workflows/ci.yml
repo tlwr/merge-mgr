@@ -27,3 +27,4 @@ jobs:
 
       - name: make
         run: make
+        shell: bash
