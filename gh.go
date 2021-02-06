@@ -150,7 +150,7 @@ func GHMergePR(url string) error {
 
 	defer os.RemoveAll(dir)
 
-	cmd := exec.Command("gh", "pr", "merge", url)
+	cmd := exec.Command("gh", "pr", "merge", "-m", url)
 
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
