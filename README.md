@@ -36,8 +36,3 @@ choose a PR to merge
 2021/02/06 21:16:11 merging https://github.com/tlwr/some-gallery-thing/pull/592
 ✔ Merged pull request #592 (build(deps): bump ts-loader from 8.0.14 to 8.0.15)
 ```
-
-## Problems
-
-Selecting "Yes" when asked to "Delete the branch locally" may fail,
-this is behaviour of the `gh` tool
