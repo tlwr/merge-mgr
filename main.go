@@ -34,19 +34,19 @@ func main() {
 		os.Exit(0)
 	}
 
-	result, tui := NewTUI(prs)
+	results, tui := NewTUI(prs)
 
 	if err := tui.Start(); err != nil {
 		log.Fatal(err)
 	}
 
-	r := <-result
+	for r := range results {
+		if r == nil {
+			log.Println("nothing to do...exiting")
+			os.Exit(0)
+		}
 
-	if r == nil {
-		log.Println("nothing to do...exiting")
-		os.Exit(0)
+		log.Printf("merging %s", r.url)
+		GHMergePR(r.url)
 	}
-
-	log.Printf("merging %s", r.url)
-	GHMergePR(r.url)
 }

@@ -1,15 +1,17 @@
 package main
 
 import (
+	"fmt"
 	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"
 )
 
 type teamodel struct {
-	cursor  int
-	choice  chan *GHOpenPR
-	choices map[int]GHOpenPR
+	cursor   int
+	choice   chan *GHOpenPR
+	choices  map[int]GHOpenPR
+	selected map[int]bool
 }
 
 func NewTUI(prs []GHOpenPR) (chan *GHOpenPR, *tea.Program) {
@@ -18,11 +20,12 @@ func NewTUI(prs []GHOpenPR) (chan *GHOpenPR, *tea.Program) {
 		choices[i] = pr
 	}
 
-	result := make(chan *GHOpenPR, 1)
+	result := make(chan *GHOpenPR, 64)
 	tui := tea.NewProgram(teamodel{
-		cursor:  0,
-		choice:  result,
-		choices: choices,
+		cursor:   0,
+		choice:   result,
+		choices:  choices,
+		selected: map[int]bool{},
 	})
 
 	return result, tui
@@ -42,8 +45,13 @@ func (m teamodel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, tea.Quit
 
 		case "enter":
-			choice := m.choices[m.cursor]
-			m.choice <- &choice
+			for i := 0; i < len(m.choices); i++ {
+				if m.selected[i] {
+					choice := m.choices[i]
+					m.choice <- &choice
+				}
+			}
+			close(m.choice)
 			return m, tea.Quit
 
 		case "down", "j":
@@ -57,6 +65,9 @@ func (m teamodel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if m.cursor < 0 {
 				m.cursor = len(m.choices) - 1
 			}
+
+		case " ":
+			m.selected[m.cursor] = !m.selected[m.cursor]
 		}
 
 	}
@@ -66,19 +77,27 @@ func (m teamodel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m teamodel) View() string {
 	s := strings.Builder{}
+
 	s.WriteString("choose a PR to merge\n\n")
 
 	for i := 0; i < len(m.choices); i++ {
+		var prefix = "  "
 		if m.cursor == i {
-			s.WriteString("(•) ")
-		} else {
-			s.WriteString("( ) ")
+			prefix = "> "
 		}
 
-		s.WriteString(m.choices[i].Display())
-		s.WriteString("\n")
+		var symbol = " "
+		if m.selected[i] {
+			symbol = "•"
+		}
+
+		s.WriteString(fmt.Sprintf("%s(%s) %s \n", prefix, symbol, m.choices[i].Display()))
 	}
-	s.WriteString("\n(press q to quit)\n")
+
+	s.WriteString("\n\n")
+	s.WriteString("(press q to quit)\n")
+	s.WriteString("(press space to select)\n")
+	s.WriteString("(press enter to proceed)\n")
 
 	return s.String()
 }
