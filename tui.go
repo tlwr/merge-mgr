@@ -78,7 +78,7 @@ func (m teamodel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func (m teamodel) View() string {
 	s := strings.Builder{}
 
-	s.WriteString("choose a PR to merge\n\n")
+	s.WriteString("choose PRs to merge\n\n")
 
 	for i := 0; i < len(m.choices); i++ {
 		var prefix = "  "
