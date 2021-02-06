@@ -94,10 +94,7 @@ func (m teamodel) View() string {
 		s.WriteString(fmt.Sprintf("%s(%s) %s \n", prefix, symbol, m.choices[i].Display()))
 	}
 
-	s.WriteString("\n\n")
-	s.WriteString("(press q to quit)\n")
-	s.WriteString("(press space to select)\n")
-	s.WriteString("(press enter to proceed)\n")
+	s.WriteString("\n(press space to select ; enter to proceed ; q to quit)\n")
 
 	return s.String()
 }
