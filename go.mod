@@ -3,7 +3,7 @@ module github.com/tlwr/merge-mgr
 go 1.16
 
 require (
-	github.com/charmbracelet/bubbletea v0.17.0
+	github.com/charmbracelet/bubbletea v0.18.0
 	github.com/onsi/ginkgo v1.16.5
 	github.com/onsi/gomega v1.16.0
 	golang.org/x/net v0.0.0-20210525063256-abc453219eb5 // indirect
