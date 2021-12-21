@@ -1,6 +1,6 @@
 module github.com/tlwr/merge-mgr
 
-go 1.16
+go 1.17
 
 require (
 	github.com/charmbracelet/bubbletea v0.19.2
