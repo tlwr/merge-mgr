@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"
+	lg "github.com/charmbracelet/lipgloss"
 )
 
 type teamodel struct {
@@ -13,6 +14,12 @@ type teamodel struct {
 	choices  map[int]GHOpenPR
 	selected map[int]bool
 }
+
+var (
+	bgColor   = lg.AdaptiveColor{Light: "0", Dark: "15"}
+	fgColor   = lg.AdaptiveColor{Light: "15", Dark: "0"}
+	highlight = lg.NewStyle().Bold(true).Background(bgColor).Foreground(fgColor)
+)
 
 func NewTUI(prs []GHOpenPR) (chan *GHOpenPR, *tea.Program) {
 	choices := map[int]GHOpenPR{}
@@ -81,17 +88,18 @@ func (m teamodel) View() string {
 	s.WriteString("choose PRs to merge\n\n")
 
 	for i := 0; i < len(m.choices); i++ {
-		var prefix = "  "
-		if m.cursor == i {
-			prefix = "> "
-		}
-
 		var symbol = " "
 		if m.selected[i] {
 			symbol = "•"
 		}
 
-		s.WriteString(fmt.Sprintf("%s(%s) %s \n", prefix, symbol, m.choices[i].Display()))
+		line := fmt.Sprintf("(%s) %s", symbol, m.choices[i].Display())
+
+		if m.cursor == i {
+			line = highlight.Render(line)
+		}
+
+		s.WriteString(line + "\n")
 	}
 
 	s.WriteString("\n(press space to select ; enter to proceed ; q to quit)\n")
