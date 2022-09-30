@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"os/user"
 	"path"
+	"sort"
 
 	"gopkg.in/yaml.v3"
 )
@@ -137,6 +138,10 @@ func GHGetPulls(user string) ([]GHOpenPR, error) {
 			url:    node.URL,
 		})
 	}
+
+	sort.Slice(prs, func(i, j int) bool {
+		return prs[i].repo <= prs[j].repo
+	})
 
 	return prs, nil
 }
