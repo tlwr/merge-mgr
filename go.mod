@@ -1,16 +1,16 @@
 module github.com/tlwr/merge-mgr
 
-go 1.17
+go 1.19
 
 require (
 	github.com/charmbracelet/bubbletea v0.20.0
+	github.com/charmbracelet/lipgloss v0.6.0
 	github.com/onsi/ginkgo v1.16.5
 	github.com/onsi/gomega v1.20.2
 	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
-	github.com/charmbracelet/lipgloss v0.6.0 // indirect
 	github.com/containerd/console v1.0.3 // indirect
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/google/go-cmp v0.5.8 // indirect
